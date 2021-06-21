@@ -5,7 +5,7 @@ import ssl
 
 ssl._create_default_https_context = ssl._create_unverified_context
 csrf=1
-cookie="bfe_id=fdfaf33a01b88dd4692ca80f00c2de7f; bsource=search_baidu; bp_t_offset_93254219=538585686283466730; bp_video_offset_93254219=538585686283466730; DedeUserID=93254219; DedeUserID__ckMd5=147d5c8d721cbde8; SESSDATA=01234f1e%2C1639649007%2C11be3*61; bili_jct=2aa08beb41f7862408fdcb5f11467811; buvid_fp=9CF88474-4C55-2A4C-78F8-876E7693B07271095infoc; buvid_fp_plain=2D4D5C68-0A00-4C2C-8862-3BD401222A4834755infoc; fingerprint=146f8a2cbe41becd905d16638ed6599e; deviceFingerprint=ac752fa09bf91ed028509c36dafcb750; _uuid=CEFC5692-54A6-6448-402E-2DABCBC33C2684939infoc; buvid3=9CF88474-4C55-2A4C-78F8-876E7693B07271095infoc; LIVE_BUVID=AUTO8516193526037131; rpdid=|(u~||Yu|YYY0J'uYulu|)RlY; sid=kfbgivnh"
+cookie=""
 def first():
     url="https://api.vc.bilibili.com/topic_svr/v1/topic_svr/topic_new?topic_id=3230836"
     header = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11.1; rv:85.0) Gecko/20100101 Firefox/85.0"}

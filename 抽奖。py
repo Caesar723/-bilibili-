@@ -5,10 +5,10 @@ import ssl
 
 ssl._create_default_https_context = ssl._create_unverified_context
 csrf=1
+cookie="bfe_id=fdfaf33a01b88dd4692ca80f00c2de7f; bsource=search_baidu; bp_t_offset_93254219=538585686283466730; bp_video_offset_93254219=538585686283466730; DedeUserID=93254219; DedeUserID__ckMd5=147d5c8d721cbde8; SESSDATA=01234f1e%2C1639649007%2C11be3*61; bili_jct=2aa08beb41f7862408fdcb5f11467811; buvid_fp=9CF88474-4C55-2A4C-78F8-876E7693B07271095infoc; buvid_fp_plain=2D4D5C68-0A00-4C2C-8862-3BD401222A4834755infoc; fingerprint=146f8a2cbe41becd905d16638ed6599e; deviceFingerprint=ac752fa09bf91ed028509c36dafcb750; _uuid=CEFC5692-54A6-6448-402E-2DABCBC33C2684939infoc; buvid3=9CF88474-4C55-2A4C-78F8-876E7693B07271095infoc; LIVE_BUVID=AUTO8516193526037131; rpdid=|(u~||Yu|YYY0J'uYulu|)RlY; sid=kfbgivnh"
 def first():
-
     url="https://api.vc.bilibili.com/topic_svr/v1/topic_svr/topic_new?topic_id=3230836"
-    header = {"User-Agent": ""}
+    header = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11.1; rv:85.0) Gecko/20100101 Firefox/85.0"}
     html = request.Request(url=url, headers=header)
     html = request.urlopen(html)
     html = json.loads(html.read())
@@ -22,11 +22,11 @@ def attention(id):
         "fid": id,
         "spmid": "333.169",
         "re_src": "0",
-        "csrf_token": "",
-        "csrf": ""
+        "csrf_token": "2aa08beb41f7862408fdcb5f11467811",
+        "csrf": "2aa08beb41f7862408fdcb5f11467811"
     }
-    header = {'user-agent': "",
-              'cookie': "", 'referer': "https://t.bilibili.com/topic/name/%E4%BA%92%E5%8A%A8%E6%8A%BD%E5%A5%96/feed"
+    header = {'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 11.1; rv:85.0) Gecko/20100101 Firefox/85.0",
+              'cookie': cookie,'referer': "https://t.bilibili.com/topic/name/%E4%BA%92%E5%8A%A8%E6%8A%BD%E5%A5%96/feed"
               }
     data=parse.urlencode(data).encode("utf-8")
     html=request.Request(url=url,headers=header,data=data,method="POST")
@@ -45,8 +45,8 @@ def repost(dn):
         "extension": "{\"emoji_type\":1}",
         "at_uids": "",
         "ctrl": "[]",
-        "csrf_token": "",
-        "csrf": ""
+        "csrf_token": "2aa08beb41f7862408fdcb5f11467811",
+        "csrf": "2aa08beb41f7862408fdcb5f11467811"
     }
     data = parse.urlencode(data).encode("utf-8")
     html = request.Request(url=url, headers=header, data=data, method="POST")
@@ -57,7 +57,7 @@ def repost(dn):
 def getdata(num,fir):
     global uid,did,rid,dmn
     url="https://api.vc.bilibili.com/topic_svr/v1/topic_svr/topic_history?topic_name=%E4%BA%92%E5%8A%A8%E6%8A%BD%E5%A5%96&offset_dynamic_id="+str(fir)
-    header={ "User-Agent": ""}
+    header={ "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11.1; rv:85.0) Gecko/20100101 Firefox/85.0"}
     html=request.Request(url=url,headers=header)
     html=request.urlopen(html)
     html=json.loads(html.read())
@@ -69,8 +69,9 @@ def getdata(num,fir):
 def comment(id):
     global error
     url = 'https://api.bilibili.com/x/v2/reply/add'
-    header = {'user-agent': "",
-              'cookie': "",  'referer': "https://t.bilibili.com/topic/name/%E4%BA%92%E5%8A%A8%E6%8A%BD%E5%A5%96/feed"#cookie uesr agent 用自己的
+    header = {'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 11.1; rv:85.0) Gecko/20100101 Firefox/85.0",
+              'cookie': cookie,
+              'referer': "https://t.bilibili.com/topic/name/%E4%BA%92%E5%8A%A8%E6%8A%BD%E5%A5%96/feed"
               }
     data = {
             'oid':id,
@@ -79,28 +80,40 @@ def comment(id):
             'plat': '1',
             'ordering': 'heat',
             'jsonp': 'jsonp',
-            'csrf': '' #没有过多研究，个人理解为每个用户拥有的验证特征码  需要自行去手动评论F12抓包获取
+            'csrf': '2aa08beb41f7862408fdcb5f11467811' #没有过多研究，个人理解为每个用户拥有的验证特征码  需要自行去手动评论F12抓包获取
         }
     data=parse.urlencode(data).encode('utf-8')
     html=request.Request(url=url, headers=header,data=data,method='POST')
     response = request.urlopen(html)
-
-
     data = response.read()
     data = json.loads(data)
     error=data["code"]
 count=0
-first=first()
-for i in range(0,2000):
-    getdata(0,first)
-    first=dmn
-    comment(rid)
 
-    if error==0:
-        count+=1
-        attention(uid)
-        repost(did)
-        print("发送成功，已发送："+str(count))
-    time.sleep(15)
+user= int(input("接着发1  重新开始发2"))
+if(user==1):
+    with open("log.txt","r") as f :
+        first=int(f.read())
+else:
+    first=first()
+
+for i in range(0,2000):
+    try:
+        getdata(0,first)
+        first=dmn
+        comment(rid)
+        if error==0:
+            count+=1
+            attention(uid)
+            repost(did)
+            print("发送成功，已发送："+str(count))
+        time.sleep(5)
+        
+
+
+    except:
+        print("error")
+    with open("log.txt","w") as f:
+        f.write(str(first))
 
 
